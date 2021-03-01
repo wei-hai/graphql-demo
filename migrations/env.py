@@ -22,7 +22,7 @@ target_metadata = Base.metadata
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 from application.settings.env import PRIMARY_DATABASE_URL
-database_url = PRIMARY_DATABASE_URL.replace("asyncpg", "psycopg2")
+database_url = PRIMARY_DATABASE_URL + "?async_fallback=True"
 
 
 def run_migrations_offline():
