@@ -1,0 +1,4 @@
+[run]
+omit=tests/*,
+	application/factory.py,
+	application/driver.py

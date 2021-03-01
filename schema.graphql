@@ -1,0 +1,21 @@
+schema {
+  query: Query
+}
+
+type Organization {
+  id: ID!
+  name: String!
+  users: [User]
+}
+
+type Query {
+  organizationById(id: ID!): Organization
+  hello(name: String = "abc"): String
+}
+
+type User {
+  id: ID!
+  name: String!
+  organizationId: ID!
+  organization: Organization!
+}

@@ -1,0 +1,7 @@
+.github
+tests
+docker-compose*
+
+venv
+.mypy_cache
+.pytest_cache

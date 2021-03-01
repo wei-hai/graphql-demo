@@ -1,0 +1,10 @@
+black
+bandit
+flake8
+pylint
+mypy
+pytest-xdist
+pytest-cov
+pytest-sanic
+codecov
+faker
