@@ -13,12 +13,12 @@ class OrganizationQuery(graphene.ObjectType):
 
     something = graphene.Field(graphene.String)
 
-    @auth(scope=ScopeEnum.ORGANIZATION_READ)
+    # @auth(scope=ScopeEnum.ORGANIZATION_READ)
     async def resolve_organization_by_id(self, info: graphene.ResolveInfo, id: str):
         repo = OrganizationRepository(info.context["request"].app.db_client)
-        await repo.add("abc")
-        return Organization(id=id, name="abc")
+        org = await repo.add("aha")
+        return Organization(id=org["id"], name=org["display_name"])
 
-    @auth(scope=ScopeEnum.ORGANIZATION_WRITE)
+    # @auth(scope=ScopeEnum.ORGANIZATION_WRITE)
     async def resolve_something(self, info: graphene.ResolveInfo):
         return "something"

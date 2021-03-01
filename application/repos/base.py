@@ -5,7 +5,7 @@ Base Repository
 from application.services.common.db_client import AsyncDatabaseClient
 
 
-class BaseDBRepository:
+class BaseRepository:
     """
     BaseRepository
     """
