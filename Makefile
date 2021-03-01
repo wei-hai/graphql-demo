@@ -1,4 +1,4 @@
-PROJECT_NAME:=backend
+PROJECT_NAME:=graphql-demo
 VIRTUAL_ENV:=venv
 
 # Development
