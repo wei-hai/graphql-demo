@@ -3,9 +3,8 @@ This module provides function to create Sanic application
 """
 
 import sentry_sdk
-from graphql.execution.executors.asyncio import AsyncioExecutor
+from graphql_server.sanic import GraphQLView
 from sanic import Sanic
-from sanic_graphql import GraphQLView
 from sentry_sdk.integrations.aiohttp import AioHttpIntegration
 from sentry_sdk.integrations.logging import LoggingIntegration
 from sentry_sdk.integrations.sanic import SanicIntegration
@@ -58,17 +57,18 @@ def create_app(default_settings: str = "application/settings/env.py") -> Sanic:
     """
     app = Sanic(__name__)
     app.update_config(default_settings)
+    app.add_route(
+        GraphQLView.as_view(
+            schema=schema.graphql_schema,
+            graphiql=app.config["ENV"] != "production",
+            enable_async=True,
+            header_editor_enabled="true"
+        ),
+        "/graphql"
+    )
 
     @app.listener("before_server_start")
     async def _before_server_start(_app, loop):
-        app.add_route(
-            GraphQLView.as_view(
-                schema=schema,
-                graphiql=_app.config["ENV"] != "production",
-                executor=AsyncioExecutor(loop=loop),
-            ),
-            "/graphql"
-        )
         await before_server_start(_app)
 
     @app.listener("after_server_stop")

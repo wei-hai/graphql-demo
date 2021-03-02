@@ -12,4 +12,4 @@ class Organization(graphene.ObjectType):
 
     async def resolve_users(self, info):
         data_loader = UserDataLoader(info.context)
-        return data_loader.load_many(self.user_ids)
+        return await data_loader.load_many(self.user_ids)

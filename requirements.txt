@@ -7,13 +7,12 @@ tenacity==6.3.1
 sanic==20.12.2
 
 # GraphQL
-graphene==2.1.8
-graphql-server-core==1.1.0
-sanic-graphql
+#graphene==2.1.8
+#graphql-server-core==1.1.0
+#sanic-graphql
+graphene==3.0.0b7
+graphql-server[sanic]==3.0.0b3
 aiodataloader==0.2.0
-
-# When graphene 3 is available
-# graphql-server[sanic]
 
 # Database
 sqlalchemy==1.4.0b3
