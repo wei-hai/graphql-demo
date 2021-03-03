@@ -62,7 +62,8 @@ def create_app(default_settings: str = "application/settings/env.py") -> Sanic:
             schema=schema.graphql_schema,
             graphiql=app.config["ENV"] != "production",
             enable_async=True,
-            header_editor_enabled="true"
+            header_editor_enabled="true",
+            should_persist_headers="true"
         ),
         "/graphql"
     )

@@ -19,6 +19,6 @@ class OrganizationQuery(graphene.ObjectType):
         org = await repo.add("aha")
         return Organization(id=org["id"], name=org["display_name"])
 
-    # @auth(scope=ScopeEnum.ORGANIZATION_WRITE)
+    @auth(scope=ScopeEnum.ORGANIZATION_WRITE)
     async def resolve_something(self, info: graphene.ResolveInfo):
         return "something"

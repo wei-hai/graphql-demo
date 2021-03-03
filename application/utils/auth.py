@@ -53,8 +53,8 @@ def authenticate(request: Request, secret_key: str):
     @return:
     """
     # In graphql request this call may execute multiple times,
-    # we need to do authentication against secret_key only once
-    if hasattr(request.ctx, secret_key):
+    # we don't need to authenticate multiple times if the user already has scopes
+    if hasattr(request.ctx, "user_scopes"):
         return
     if request.token is None:
         raise Unauthorized(ErrorEnum.AUTH_401_JWT.value)
@@ -68,15 +68,19 @@ def authenticate(request: Request, secret_key: str):
             jwt.MissingRequiredClaimError,
     ) as ex:
         raise Unauthorized(ErrorEnum.AUTH_401_JWT.value) from ex
+    request.ctx.user_id = payload["sub"]
+    request.ctx.user_roles = payload["roles"]
+
+
+def get_user_scopes(request: Request):
+    """
+    Get user scopes from roles
+    """
     scopes = frozenset()
-    for role in request.ctx.roles:
+    for role in request.ctx.user_roles:
         if role in ROLE_SCOPES:
             scopes = scopes.union(ROLE_SCOPES[role])
-    request.ctx.scopes = scopes
-    setattr(request.ctx, secret_key, True)
-    request.ctx.user_id = payload["sub"]
-    request.ctx.roles = payload["roles"]
-    request.ctx.scopes = scopes
+    request.ctx.user_scopes = scopes
 
 
 def authorize(request: Request, scope: ScopeEnum):
@@ -86,7 +90,7 @@ def authorize(request: Request, scope: ScopeEnum):
     :param scope:
     :return:
     """
-    if scope not in request.ctx.scopes:
+    if scope not in request.ctx.user_scopes:
         raise Unauthorized(ErrorEnum.AUTH_401_SCOPE.value)
 
 
@@ -102,6 +106,7 @@ def auth(scope: ScopeEnum) -> Callable:
         async def wrapper(root, info, *args, **kwargs):
             request = info.context["request"]
             authenticate(request, "JWT_SECRET")
+            get_user_scopes(request)
             authorize(request, scope)
             return await fn(root, info, *args, **kwargs)
 
