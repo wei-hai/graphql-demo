@@ -4,7 +4,7 @@ pyjwt==2.4.0
 tenacity==7.0.0
 
 # Sanic
-sanic==20.12.2
+sanic==20.12.7
 
 # GraphQL
 #graphene==2.1.8
