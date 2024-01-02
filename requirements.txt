@@ -1,4 +1,4 @@
-aiohttp[speedups]==3.8.5
+aiohttp[speedups]==3.8.6
 psutil==5.8.0
 pyjwt==2.4.0
 tenacity==7.0.0
